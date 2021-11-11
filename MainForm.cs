@@ -14,7 +14,7 @@ namespace Test_Program4
         int fNumber;
         string fPath;
         FileStream fStream;
-        Image loadImage;
+        Bitmap loadImage;
         PictureBox[] pbList;
         MenuStrip menuStrip;
         OpenFileDialog ofd;
@@ -89,25 +89,35 @@ namespace Test_Program4
             {
                 sw = Stopwatch.StartNew();
                 fStream = File.OpenRead(filesList[i]);
-                loadImage = Image.FromStream(fStream, false, false);
-                pbList[i].Size = new Size(loadImage.Width, loadImage.Height);
-                Bitmap b = new Bitmap(loadImage.Width, loadImage.Height);
-                Graphics g = Graphics.FromImage(b);
+                loadImage = Image.FromStream(fStream, false, false) as Bitmap;
+                //pbList[i].Size = new Size(loadImage.Width, loadImage.Height);
+                //Bitmap b = new Bitmap(loadImage.Width, loadImage.Height);
+                //Graphics g = Graphics.FromImage(b);
 
                 //DrawImageが遅い
+                //回避策はWPFかOpenCVかDirectX
 
                 //g.DrawImage(loadImage, 0, 0, loadImage.Width, loadImage.Height);
                 //g.DrawImage(loadImage, 0, 0);
 
-                loadImage.Dispose();
-                g.Dispose();
-                pbList[i].Image = b;
+                //int iw = loadImage.Width;
+                //int ih = loadImage.Height;
+                //var bmp = loadImage.LockBits()
+
+                //loadImage.Dispose();
+                //g.Dispose();
+
+                //Bitmap b = Image.FromFile(filesList[i]) as Bitmap;
+                pbList[i].Size = new Size(loadImage.Width, loadImage.Height);
+                pbList[i].Image = loadImage;
+                
                 sw.Stop();
                 Console.WriteLine(sw.ElapsedMilliseconds + $"ミリ秒");
             }
-            fStream.Dispose();
+            //fStream.Dispose();
             sw_all.Stop();
             Console.WriteLine(sw_all.ElapsedMilliseconds + $"ミリ秒");
+            //114ms
 
             /*
             sw = Stopwatch.StartNew();
